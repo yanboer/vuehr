@@ -15,6 +15,8 @@
 </template>
 
 <script>
+    // import {postKeyValueRequests} from "../utils/api";      //导入自定义方法
+
     export default {
         name: "Login",
         data(){
@@ -34,8 +36,15 @@
             submitLogin() {     //校验成功后执行
                 // alert('submitLogin');
                 this.$refs.loginForm.validate((valid) => {
-                    if (valid) {
-                        alert('submit!');
+                    if (valid) {    //调用
+                        this.postKeyValueRequests('/doLogin',this.loginForm).then(resp=>{       //main.js 中存了引用
+                            if(resp){
+                                // alert(JSON.stringify(resp))     //服务端返回数据
+                                window.sessionStorage.setItem('user',JSON.stringify(resp.obj));
+                                this.$router.replace('/home')      //不能手动回到登录页
+                            }
+                        })
+                        // alert('submit!');
                     } else {
                         this.$message.error('请输入正确有效字段');
                         return false;
