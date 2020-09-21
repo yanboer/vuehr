@@ -15,8 +15,28 @@
                 </el-dropdown>
             </el-header>
             <el-container>
-                <el-aside width="200px">Aside</el-aside>
-                <el-main>Main</el-main>
+                <el-aside width="200px">
+                    <el-menu router unique-opened>
+                        <!-- this.$router.options.routes 拿到 routes数组-->
+                        <!-- routes 指 Computed 方法内的 routes-->
+                        <el-submenu :index="index+''" v-for="(item,index) in routes" v-if="!item.hidden" :key="index">
+                            <template slot="title">
+                                <i style="color: rebeccapurple;margin-right: 3px" :class="item.iconCls"></i>
+                                <span>{{item.name}}</span>
+                            </template>
+<!--                            <el-submenu index="1-4">-->
+<!--                                <template slot="title">选项1</template>-->
+<!--                                <template slot="title">选项2</template>-->
+<!--                            </el-submenu>-->
+                            <el-menu-item :index="child.path" v-for="(child,indexj) in item.children" :key="indexj">
+                                {{child.name}}
+                            </el-menu-item>
+                        </el-submenu>
+                    </el-menu>
+                </el-aside>
+                <el-main>
+                    <router-view/>
+                </el-main>
             </el-container>
         </el-container>
     </div>
@@ -30,16 +50,25 @@
                 user: JSON.parse(window.sessionStorage.getItem('user')),
             }
         },
+        computed: {
+          routes(){
+              return this.$store.state.routes;
+          }
+        },
         methods: {
+            // menuClick(index){
+            //     this.$router.push(index)        //跳转到 index 地址
+            // },
             commandHandler(command){
                 if(command == 'logout'){    //注销
                     this.$confirm('此操作将注销登录, 是否继续?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
-                        type: 'warning'
+                        type: 'warning',
                     }).then(() => {
                         this.getRequest('/logout');
                         window.sessionStorage.removeItem('user')
+                        this.$store.commit('initRoutes',[]);        //注销要清空 store 里的数据
                         this.$router.replace('/');
                     }).catch(() => {
                         this.$message({

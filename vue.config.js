@@ -1,4 +1,6 @@
 let proxyObj = {};
+
+//前后端接口对接
 proxyObj['/'] = {
     ws: false,
     target: 'http://localhost:8081',     //请求转发到 8081
