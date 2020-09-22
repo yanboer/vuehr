@@ -35,6 +35,16 @@
                     </el-menu>
                 </el-aside>
                 <el-main>
+                    <!-- element ui 的面包屑-->
+                    <el-breadcrumb separator-class="el-icon-arrow-right" v-if="this.$router.currentRoute.path != '/home'">
+                        <!-- 点击首页回到首页-->
+                        <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+                        <!-- 显示当前在那个 tag 下-->
+                        <el-breadcrumb-item style="margin-bottom: 10px">{{this.$router.currentRoute.name}}</el-breadcrumb-item>
+                    </el-breadcrumb>
+                    <div class="homeWelcome" v-if="this.$router.currentRoute.path == '/home'">
+                        欢迎来到 vhr 管理系统！
+                    </div>
                     <router-view/>
                 </el-main>
             </el-container>
@@ -110,6 +120,13 @@
     .el-dropdown-link{
         display: flex;
         align-items: center;
+    }
+    .homeWelcome{
+        text-align: center;
+        color: rebeccapurple;
+        font-size: 30px;
+        font-family: 华文行楷;
+        padding-top: 30px;
     }
 
 </style>
