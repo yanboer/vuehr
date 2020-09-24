@@ -43,7 +43,14 @@
                             if(resp){
                                 // alert(JSON.stringify(resp))     //服务端返回数据
                                 window.sessionStorage.setItem('user',JSON.stringify(resp.obj));
-                                this.$router.replace('/home')      //不能手动回到登录页
+
+                                let path = this.$route.query.redirect;      //获取 path
+                                console.log(path);
+                                if(path == '/' || path == undefined){      //如果没有路径
+                                    this.$router.replace('/home')      //不能手动回到登录页
+                                } else{                                     //不然就直接去用户想去的页面
+                                    this.$router.replace(path);
+                                }
                             }
                         })
                         // alert('submit!');

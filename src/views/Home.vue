@@ -45,7 +45,7 @@
                     <div class="homeWelcome" v-if="this.$router.currentRoute.path == '/home'">
                         欢迎来到 vhr 管理系统！
                     </div>
-                    <router-view/>
+                    <router-view class="homeRouter"/>
                 </el-main>
             </el-container>
         </el-container>
@@ -93,6 +93,10 @@
 </script>
 
 <style>
+    .homeRouter{
+        margin-top: 1px;
+    }
+
     .homeHeader {
         background: #6b7dff;
         display: flex;

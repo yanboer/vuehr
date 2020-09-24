@@ -32,8 +32,13 @@ router.beforeEach((to, from, next) => {
   if(to.path=='/'){   //去 /login 页面 就直接放行
       next()
   } else{             //去 其它页面就初始化 menu(initMenu)
-      initMenu(router,store);
-      next();
+      if(window.sessionStorage.getItem("user")){        //如果登录了 user 域会有 user 信息，进行下一步即可
+          initMenu(router,store);
+          next();
+      } else{       //没登录访问其它页面就去首页
+          // console.log(to);
+          next('/?redirect='+to.path);     //登录完成后直接重定向到用户想去的页面
+      }
   }
 })
 
@@ -41,4 +46,4 @@ new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app')       //引用 'app' 组件
